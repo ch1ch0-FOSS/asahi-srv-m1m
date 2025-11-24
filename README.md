@@ -1,56 +1,18 @@
-# asahi-srv-infrastructure
+# asahi-srv-m1m
 
-ARM64 server infrastructure on Asahi Linux (Fedora Asahi Remix).
+Fedora Asahi Linux server blueprint for srv-m1m on Apple M1 Mac mini.
 
-## Overview
+This repository defines the high-level inventory and playbook structure used to configure the server.
+It delegates reusable roles and tooling to dedicated repositories:
 
-Infrastructure-as-code for Mac Mini M1 running Fedora Asahi Remix as development server.
+- Ansible roles and shared playbooks: https://github.com/ch1ch0-FOSS/ansible-playbooks
+- Disaster recovery tooling: https://github.com/ch1ch0-FOSS/disaster-recovery-toolkit
+- Operator environment (dotfiles, terminal workflow): https://github.com/ch1ch0-FOSS/dotfiles-terminal-workflow
+- Narrative case studies and design notes: https://github.com/ch1ch0-FOSS/infrastructure-case-studies
 
-## Services
+## Usage (blueprint only)
 
-### Forgejo (Git Service)
-- **Port**: 3000 (localhost only)
-- **Type**: systemd user service
-- **Data**: `/mnt/data/srv/forgejo`
-
-### Vaultwarden (Password Manager)
-- **Port**: 8000 (localhost only)
-- **Type**: systemd user service
-- **Data**: `/mnt/data/srv/vaultwarden`
-
-### PostgreSQL (Database)
-- **Port**: 5432 (localhost only)
-- **Type**: system service
-- **Data**: `/var/lib/pgsql`
-
-### Ollama (LLM Inference)
-- **Port**: 11434 (localhost only)
-- **Type**: systemd user service
-- **Data**: `/mnt/data/srv/ollama`
-
-## Architecture
-
-All services bind to localhost (127.0.0.1). External access via SSH tunneling:
-
-ssh -L 3000:localhost:3000 user@server
-
-## Installation
-
-See individual service directories for installation scripts and configuration.
-
-## Monitoring
-
-systemctl --user status forgejo
-systemctl --user status vaultwarden
-systemctl --user status ollama
-sudo systemctl status postgresql
-
-
-## Backup
-
-Automated backups via systemd timers. See `scripts/backup/`.
-
-## License
-
-MIT
-
+1. Clone this repository and ansible-playbooks.
+2. Copy `inventory/example` to your own inventory and adjust hostnames and groups.
+3. Define real variables in `group_vars/` and `host_vars/` on your own infrastructure (not in this public repo).
+4. Run your playbooks from ansible-playbooks using this inventory structure as a reference.

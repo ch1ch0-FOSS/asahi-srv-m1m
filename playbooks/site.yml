@@ -1,0 +1,11 @@
+---
+- name: Configure Fedora Asahi srv-m1m
+  hosts: asahi_srv_m1m
+  become: true
+
+  roles:
+    # These roles are implemented in https://github.com/ch1ch0-FOSS/ansible-playbooks
+    - role: base_hardening
+    - role: monitoring_stack
+    - role: backup_client
+    - role: application_stack
